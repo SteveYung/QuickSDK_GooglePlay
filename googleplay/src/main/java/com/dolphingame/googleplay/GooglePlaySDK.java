@@ -1,13 +1,13 @@
 package com.dolphingame.googleplay;
 
 import android.content.Intent;
-import android.util.Log;
 
 import com.dolphingame.googleplay.util.IabHelper;
 import com.dolphingame.googleplay.util.IabResult;
 import com.dolphingame.googleplay.util.Purchase;
 import com.u8.sdk.PayParams;
 import com.u8.sdk.SDKParams;
+import com.u8.sdk.U8SDK;
 import com.u8.sdk.UserExtraData;
 
 /**
@@ -17,6 +17,9 @@ import com.u8.sdk.UserExtraData;
 public class GooglePlaySDK {
 
     private static GooglePlaySDK instance;
+
+    private String mPublicKey;
+    private Boolean mIsDebug;
 
     IabHelper mHelper;
 
@@ -49,6 +52,19 @@ public class GooglePlaySDK {
 
     private void initSDK(){
         //TODO::这里调用AAA的SDK初始化方法
+        mHelper = new IabHelper(U8SDK.getInstance().getContext(), mPublicKey);
+        mHelper.enableDebugLogging(mIsDebug);
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+
+                if (!result.isSuccess()) {
+                    return;
+                }
+
+                // Have we been disposed of in the meantime? If so, quit.
+                if (mHelper == null) return;
+            }
+        });
     }
 
     private void parseSDKParams(SDKParams params){
