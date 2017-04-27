@@ -4,6 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
     defaultConfig {
+        applicationId 'com.freepoker.cstarpokeren'
         minSdkVersion 15
         targetSdkVersion 23
     }

@@ -1,9 +1,8 @@
-package com.dolphingame.sdkbase;
+package com.freepoker.cstarpokeren;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,9 +14,6 @@ import com.u8.sdk.plugin.U8Pay;
 import com.u8.sdk.plugin.U8Share;
 import com.u8.sdk.plugin.U8User;
 import com.u8.sdk.verify.UToken;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends Activity {
 

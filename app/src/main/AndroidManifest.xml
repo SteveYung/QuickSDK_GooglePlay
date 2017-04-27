@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dolphingame.sdkbase">
+    package="com.freepoker.cstarpokeren">
 
     <application
         android:name="com.u8.sdk.U8Application">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.freepoker.cstarpokeren.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

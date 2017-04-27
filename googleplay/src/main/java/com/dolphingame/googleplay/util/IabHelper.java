@@ -302,6 +302,7 @@ public class IabHelper {
         }
         else {
             // no service available to handle that Intent
+            mServiceConn = null;
             if (listener != null) {
                 listener.onIabSetupFinished(
                         new IabResult(BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE,
@@ -497,6 +498,14 @@ public class IabHelper {
             flagEndAsync();
 
             result = new IabResult(IABHELPER_REMOTE_EXCEPTION, "Remote exception while starting purchase flow");
+            if (listener != null) listener.onIabPurchaseFinished(result, null);
+        }
+        catch (Exception e){
+            logError("RemoteException while launching purchase flow for sku " + sku);
+            e.printStackTrace();
+            flagEndAsync();
+
+            result = new IabResult(IABHELPER_ERROR_BASE, "unknown exception while starting purchase flow");
             if (listener != null) listener.onIabPurchaseFinished(result, null);
         }
     }
