@@ -10,6 +10,7 @@ import com.dolphingame.googleplay.util.Inventory;
 import com.dolphingame.googleplay.util.Purchase;
 import com.u8.sdk.IActivityCallback;
 import com.u8.sdk.PayParams;
+import com.u8.sdk.PayResult;
 import com.u8.sdk.SDKParams;
 import com.u8.sdk.U8Code;
 import com.u8.sdk.U8SDK;
@@ -218,7 +219,7 @@ public class GooglePlaySDK implements IActivityCallback {
         //TODO::调用AAA充值接口
         if (data != null)
         {
-            String paypoint = data.getProductName();
+            String paypoint = data.getProductId();
             String orderId = data.getOrderID();
             Log.d(TAG, "[doPay] paypoint: " + paypoint);
             if (mHelper != null){
@@ -271,28 +272,26 @@ public class GooglePlaySDK implements IActivityCallback {
                 consumeCompleted.put(purchase.getSku(), data);
                 saveData();
 
-//                if (sParams.containsKey("notify_url")){
-//                    Log.i(TAG, "[onConsumeFinished] notify_url: " + sParams.get("notify_url"));
-//                    HttpConnectionUtil httpRequest = new HttpConnectionUtil();
-//                    httpRequest.setUrl(sParams.get("notify_url"));
-//                    JSONObject postData = new JSONObject();
-//                    try {
-//                        JSONObject subData = new JSONObject();
-//                        subData.put("orderId", purchase.getDeveloperPayload());
-//                        subData.put("signedData", purchase.getOriginalJson());
-//                        subData.put("signature", purchase.getSignature());
-//                        postData.put(purchase.getSku(), subData);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    httpRequest.setPostData(postData);
-//                    httpRequest.setRequestType(HttpConnectionUtil.RequestType.kPost);
-//                    httpRequest.setResponseListener(notifyListener);
-//                    httpRequest.execute();
-//                }
+                PayResult payRes = new PayResult();
+                payRes.setProductName(data.paypoint);
+                payRes.setProductID(data.orderId);
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("signedData", purchase.getOriginalJson());
+                    json.put("signature", purchase.getSignature());
+                    json.put("clientToken", purchase.getToken());
+                    json.put("productId", purchase.getSku());
+                    json.put("packageName", purchase.getPackageName());
+                    json.put("orderId", purchase.getOrderId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
+                payRes.setExtension(json.toString());
+                U8SDK.getInstance().onPayResult(payRes);
             }
             else {
+                U8SDK.getInstance().onResult(U8Code.CODE_PAY_FAIL, null);
             }
         }
     };
@@ -348,20 +347,6 @@ public class GooglePlaySDK implements IActivityCallback {
     public void onBackPressed() {
 
     }
-
-//    private boolean checkPlayServices() {
-//        boolean result = false;
-//        try {
-//            GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-//            int resultCode = apiAvailability.isGooglePlayServicesAvailable(mContext);
-//            result = (resultCode == ConnectionResult.SUCCESS);
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return result;
-//    }
 
     private void loadData(){
         Log.d(TAG, "[loadData] entry");

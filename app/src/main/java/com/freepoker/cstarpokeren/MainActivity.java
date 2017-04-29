@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.u8.sdk.IU8SDKListener;
 import com.u8.sdk.InitResult;
+import com.u8.sdk.PayParams;
 import com.u8.sdk.PayResult;
 import com.u8.sdk.U8SDK;
 import com.u8.sdk.plugin.U8Pay;
@@ -51,7 +52,10 @@ public class MainActivity extends Activity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                U8Pay.getInstance().pay(null);
+                PayParams p = new PayParams();
+                p.setProductId("t01_6_diamonds");
+                p.setOrderID("123123123");
+                U8Pay.getInstance().pay(p);
             }
         });
 
