@@ -282,7 +282,7 @@ public class GooglePlaySDK implements IActivityCallback {
                     json.put("clientToken", purchase.getToken());
                     json.put("productId", purchase.getSku());
                     json.put("packageName", purchase.getPackageName());
-                    json.put("orderId", purchase.getOrderId());
+                    json.put("orderId", purchase.getDeveloperPayload());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
